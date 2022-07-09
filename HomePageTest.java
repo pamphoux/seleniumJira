@@ -1,52 +1,51 @@
-package com.demo.utility;
+package com.demo.project;
 
-import net.rcarz.jiraclient.BasicCredentials;
-import net.rcarz.jiraclient.Field;
-import net.rcarz.jiraclient.Issue;
-import net.rcarz.jiraclient.Issue.FluentCreate;
-import net.rcarz.jiraclient.JiraClient;
-import net.rcarz.jiraclient.JiraException;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import com.demo.utility.JiraCreateIssue;
 
-public class JiraServiceProvider {
+public class HomePageTest {
+	private WebDriver driver;
+	private String baseUrl;
 
-	private JiraClient Jira;
-	private String project;
-	private String JiraUrl;
-
-	public JiraServiceProvider(String JiraUrl, String username, String password, String project) {
-		this.JiraUrl = JiraUrl;
-
-		// create basic authentication object
-		BasicCredentials creds = new BasicCredentials(username, password);
-
-		// initialize the Jira client with the url and the credentials
-		Jira = new JiraClient(JiraUrl, creds);
-		this.project = project;
+	@BeforeClass(alwaysRun = true)
+	public void setUp() throws Exception {
+		File chromedriverExecutable = new File("src/main/resources/chromedriver");
+		System.setProperty("webdriver.chrome.driver", chromedriverExecutable.getAbsolutePath());
+		driver = new ChromeDriver();
+		baseUrl = "https://www.browserstack.com/";
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
-	public void createJiraIssue(String issueType, String summary, String description, String reporterName) {
+//Custom annotation explained in following sections
 
-		try {
+	@JiraCreateIssue(isCreateIssue = true)
+	@Test
+	public void verifyHomepageHeaderText() throws Exception {
+		driver.get(baseUrl);
+		WebElement el = driver.findElement(By.xpath("//h1[1]"));
+		assertEquals(el.getText(), "App & Browser Testing Made Easy", "Wrong header text displayed in Home page");
+	}
 
-			// Avoid Creating Duplicate Issue
-			Issue.SearchResult sr = Jira.searchIssues("summary ~ \"" + summary + "\"");
-			if (sr.total != 0) {
-				System.out.println("Same Issue Already Exists on Jira");
-				return;
-			}
+	@JiraCreateIssue(isCreateIssue = true)
+	@Test
+	public void verifyHomePageLogo() throws Exception {
+		driver.get(baseUrl);
+		WebElement el = driver.findElement(By.id("logo"));
+		assertTrue(el.isDisplayed(), "The browserstack logo not displaying in home page");
+	}
 
-			// Create issue if not exists
-			FluentCreate fleuntCreate = Jira.createIssue(project, issueType);
-			fleuntCreate.field(Field.SUMMARY, summary);
-			fleuntCreate.field(Field.DESCRIPTION, description);
-			Issue newIssue = fleuntCreate.execute();
-			System.out.println("********************************************");
-			System.out.println("New issue created in Jira with ID: " + newIssue);
-			System.out.println("New issue URL is :" + JiraUrl + "/browse/" + newIssue);
-			System.out.println("*******************************************");
-
-		} catch (JiraException e) {
-			e.printStackTrace();
-		}
+	@AfterClass(alwaysRun = true)
+	public void tearDown() throws Exception {
+		driver.quit();
 	}
 }
