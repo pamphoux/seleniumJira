@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    node {
-      label 'Pipeline'
-    }
-
-  }
+  agent any
   stages {
     stage('Report Test Auto in Xray') {
       steps {
