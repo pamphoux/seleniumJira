@@ -9,10 +9,10 @@ pipeline {
         stage ('Pre Build'){
             steps{sh "chmod +x src/main/resources/chromedriver"}}
         
-        stage ('Build') {
-            steps {// Exécuter Maven (version pour un système Unix)
+        //stage ('Build') {
+           // steps {// Exécuter Maven (version pour un système Unix)
                // sh "mvn -Dmaven.test.failure.ignore=true clean"
-                sh "mvn install"}}
+               // sh "mvn install"}}
             
         stage ('Import results to Xray') {
             steps {
