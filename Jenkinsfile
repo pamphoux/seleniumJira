@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'Pipeline'
+    }
+
+  }
   stages {
     stage('Report Test Auto in Xray') {
       steps {
@@ -11,5 +16,6 @@ pipeline {
   environment {
     jiraInstance = 'pamphoux.atlassian.net'
     SCM = 'Git'
+    Repositories = 'Repository URL'
   }
 }
