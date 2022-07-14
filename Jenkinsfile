@@ -10,5 +10,6 @@ pipeline {
   }
   environment {
     jiraInstance = 'pamphoux.atlassian.net'
+    SCM = 'Git'
   }
 }
