@@ -3,16 +3,16 @@ pipeline {
   stages {
     stage('Pre Build') {
       steps {
-        sh '"chmod +x src/main/resources/chromedriver"'
+        sh 'chmod +x src/main/resources/chromedriver'
       }
     }
 
     stage('Build') {
       steps {
-        sh '''"mvn -Dmaven.test.failure.ignore=true clean"
+        sh '''mvn -Dmaven.test.failure.ignore=true clean
 
 
- "mvn install"'''
+ mvn install'''
       }
     }
 
