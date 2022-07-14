@@ -1,11 +1,27 @@
 pipeline {
   agent any
   stages {
-    stage('Report Test Auto in Xray') {
+    stage('Pre Build') {
       steps {
-        echo 'Success'
+        sh 'sh "chmod +x src/main/resources/chromedriver"'
       }
-    agent any
     }
+
+    stage('Build') {
+      steps {
+        sh '''sh "mvn -Dmaven.test.failure.ignore=true clean"
+
+
+
+sh "mvn install"'''
+      }
+    }
+
+    stage('Import results to Xray') {
+      steps {
+        jiraSendBuildInfo(branch: 'main', site: 'pamphoux.atlassian.net')
+      }
+    }
+
   }
 }
