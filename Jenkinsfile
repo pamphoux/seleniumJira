@@ -11,7 +11,7 @@ pipeline {
         
         stage ('Build') {
             steps {// Exécuter Maven (version pour un système Unix)
-                sh "mvn -Dmaven.test.failure.ignore=true clean"
+               // sh "mvn -Dmaven.test.failure.ignore=true clean"
                 sh "mvn install"}}
             
         stage ('Import results to Xray') {
