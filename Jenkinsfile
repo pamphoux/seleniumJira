@@ -7,7 +7,7 @@ pipeline {
     stages {
         
         stage ('Pre Build'){
-            steps{sh "chmod +x driver/chromedriver"}}
+            steps{sh "chmod +x src/main/resources/chromedriver"}}
         
         stage ('Build') {
             steps {// Exécuter Maven (version pour un système Unix)
