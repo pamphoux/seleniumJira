@@ -15,8 +15,16 @@ pipeline {
     }
 
     stage('Import results to Xray') {
+      agent any
+      environment {
+        endpointName = '/testng'
+        importFilePath = 'target/surefire-reports/testng-results.xml'
+        importToSameExecution = 'true'
+        projectKey = 'TNG'
+        serverInstance = '5b33af57-887c-4b5c-b98c-6e6fe7d365f7'
+      }
       steps {
-        jiraSendBuildInfo(branch: 'main', site: 'pamphoux.atlassian.net')
+        echo 'ok'
       }
     }
 
