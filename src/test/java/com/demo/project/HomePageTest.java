@@ -14,6 +14,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.demo.utility.JiraCreateIssue;
+import com.xpandit.testng.annotations.Xray;
 
 public class HomePageTest {
 	private WebDriver driver;
@@ -32,6 +33,7 @@ public class HomePageTest {
 
 	@JiraCreateIssue(isCreateIssue = true)
 	@Test
+	@Xray(test="TNG-11")
 	public void verifyHomepageHeaderText() throws Exception {
 		driver.get(baseUrl);
 		WebElement el = driver.findElement(By.xpath("//h1[1]"));
