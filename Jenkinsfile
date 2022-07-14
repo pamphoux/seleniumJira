@@ -8,4 +8,7 @@ pipeline {
     }
 
   }
+  environment {
+    jiraInstance = 'pamphoux.atlassian.net'
+  }
 }
